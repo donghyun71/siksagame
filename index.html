@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍳 식사게임 - 신나는 요리 도전!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 메뉴 화면 -->
+  <div id="screen-menu" class="screen active">
+    <div class="menu-container">
+      <div class="title-area">
+        <div class="title-emoji">🍳</div>
+        <h1>식사게임</h1>
+        <p class="subtitle">제한시간 안에 맛있는 요리를 만들어요!</p>
+      </div>
+
+      <div class="cuisine-section">
+        <h2>어떤 요리를 할까요?</h2>
+        <div class="cuisine-buttons">
+          <button class="cuisine-btn" data-cuisine="korean" onclick="selectCuisine('korean')">
+            <span class="c-emoji">🥘</span>
+            <span class="c-name">한식</span>
+            <span class="c-desc">김치찌개 · 비빔밥 · 라면 · 제육볶음</span>
+          </button>
+          <button class="cuisine-btn" data-cuisine="chinese" onclick="selectCuisine('chinese')">
+            <span class="c-emoji">🥡</span>
+            <span class="c-name">중식</span>
+            <span class="c-desc">짜장면 · 볶음밥 · 탕수육 · 마파두부</span>
+          </button>
+          <button class="cuisine-btn" data-cuisine="western" onclick="selectCuisine('western')">
+            <span class="c-emoji">🍔</span>
+            <span class="c-name">양식</span>
+            <span class="c-desc">파스타 · 햄버거 · 피자 · 샐러드</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="how-to-play">
+        <h3>📖 게임 방법</h3>
+        <div class="steps">
+          <div class="step"><span class="step-num">1</span><span>손님의 주문을 확인하세요</span></div>
+          <div class="step"><span class="step-num">2</span><span>레시피를 보고 재료를 클릭해서 모으세요</span></div>
+          <div class="step"><span class="step-num">3</span><span>🔥 조리하고 🍽️ 서빙하면 점수 획득!</span></div>
+          <div class="step"><span class="step-num">4</span><span>시간이 다 되기 전에 최대한 많이 서빙하세요</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 게임 화면 -->
+  <div id="screen-game" class="screen">
+
+    <!-- 상단 바 -->
+    <div class="top-bar">
+      <div class="score-box">
+        <span class="tb-label">점수</span>
+        <span id="score" class="tb-score">0</span>
+      </div>
+      <div class="timer-box">
+        <div class="game-timer-wrap">
+          <div id="game-timer-fill" class="game-timer-fill"></div>
+        </div>
+        <span id="game-timer-text" class="timer-text">3:00</span>
+      </div>
+      <div class="combo-box" id="combo-box" style="display:none">
+        <span class="combo-label">콤보</span>
+        <span id="combo-count" class="combo-count">x0</span>
+      </div>
+      <button class="back-btn" onclick="backToMenu()">🏠</button>
+    </div>
+
+    <!-- 게임 영역 -->
+    <div class="game-area">
+
+      <!-- 왼쪽: 손님 + 레시피 -->
+      <div class="left-panel">
+        <div class="customer-card">
+          <div id="customer-char" class="customer-char">👨</div>
+          <div class="order-bubble">
+            <div class="bubble-arrow"></div>
+            <span id="order-emoji" class="order-emoji">🍲</span>
+            <span id="order-name" class="order-name">김치찌개</span>
+          </div>
+          <div class="customer-timer-wrap">
+            <div id="customer-timer-fill" class="customer-timer-fill"></div>
+          </div>
+          <div id="customer-mood" class="customer-mood">빨리 부탁해요!</div>
+        </div>
+
+        <div class="recipe-card">
+          <div class="recipe-title">📋 레시피</div>
+          <div id="recipe-list" class="recipe-list"></div>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 주방 -->
+      <div class="kitchen-panel">
+        <div class="kitchen-workspace">
+          <div class="workspace-header">주방 작업대</div>
+          <div class="pot-zone">
+            <div id="pot-icon" class="pot-icon">🍳</div>
+          </div>
+          <div id="selected-zone" class="selected-zone">
+            <span class="placeholder-text">재료를 선택하세요</span>
+          </div>
+          <div class="action-row">
+            <button id="cook-btn" class="cook-btn hidden" onclick="cookDish()">🔥 조리하기!</button>
+            <button id="serve-btn" class="serve-btn hidden" onclick="serveDish()">🍽️ 서빙!</button>
+          </div>
+          <div id="cook-progress-wrap" class="cook-progress-wrap hidden">
+            <div class="cook-progress-bar">
+              <div id="cook-progress-fill" class="cook-progress-fill"></div>
+            </div>
+            <div class="cook-status">조리 중... 🔥</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 재료 패널 -->
+    <div class="ingredients-panel">
+      <div class="panel-title">🧺 재료 선택</div>
+      <div id="ingredients-grid" class="ingredients-grid"></div>
+    </div>
+
+    <!-- 피드백 오버레이 -->
+    <div id="feedback-overlay" class="feedback-overlay hidden">
+      <div id="feedback-text" class="feedback-text"></div>
+    </div>
+
+  </div>
+
+  <!-- 게임 오버 화면 -->
+  <div id="screen-gameover" class="screen">
+    <div class="gameover-wrap">
+      <div class="gameover-card">
+        <div id="go-emoji" class="go-emoji">🎉</div>
+        <h1 id="go-title">게임 종료!</h1>
+        <div id="go-grade" class="go-grade">⭐⭐⭐</div>
+        <div class="go-score-wrap">
+          <span class="go-score-label">최종 점수</span>
+          <span id="go-score" class="go-score">0</span>
+          <span class="go-score-unit">점</span>
+        </div>
+        <div id="go-stats" class="go-stats"></div>
+        <div id="go-message" class="go-message"></div>
+        <div class="go-buttons">
+          <button class="go-btn retry" onclick="retryGame()">🔄 다시 도전!</button>
+          <button class="go-btn menu" onclick="backToMenu()">🏠 메뉴로</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

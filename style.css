@@ -1,0 +1,663 @@
+/* ===== BASE ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', sans-serif;
+  background: #fff8f0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* ===== SCREENS ===== */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ===== MENU ===== */
+.menu-container {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 30px 20px 40px;
+  width: 100%;
+}
+
+.title-area {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title-emoji {
+  font-size: 4.5em;
+  animation: tilt 1.5s ease-in-out infinite alternate;
+  display: block;
+  margin-bottom: 8px;
+}
+
+@keyframes tilt {
+  from { transform: rotate(-10deg) scale(1); }
+  to   { transform: rotate(10deg)  scale(1.1); }
+}
+
+.title-area h1 {
+  font-size: 2.8em;
+  color: #e83e3e;
+  text-shadow: 3px 3px 0 #ffcba4;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 1em;
+  color: #777;
+}
+
+.cuisine-section h2 {
+  font-size: 1.1em;
+  color: #444;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.cuisine-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.cuisine-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 18px;
+  background: #fff;
+  border: 3px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 170px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.cuisine-btn:hover { transform: translateY(-6px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+.cuisine-btn[data-cuisine="korean"]  { border-color: #e83e3e; }
+.cuisine-btn[data-cuisine="korean"]:hover  { background: #fff3f3; }
+.cuisine-btn[data-cuisine="chinese"] { border-color: #ff8c00; }
+.cuisine-btn[data-cuisine="chinese"]:hover { background: #fff8ee; }
+.cuisine-btn[data-cuisine="western"] { border-color: #4caf50; }
+.cuisine-btn[data-cuisine="western"]:hover { background: #f0fff0; }
+
+.c-emoji { font-size: 2.8em; }
+.c-name  { font-size: 1.3em; font-weight: 700; color: #333; }
+.c-desc  { font-size: 0.72em; color: #999; text-align: center; line-height: 1.4; }
+
+.how-to-play {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.how-to-play h3 {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.steps { display: flex; flex-direction: column; gap: 9px; }
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9em;
+  color: #555;
+  background: #fafafa;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.step-num {
+  width: 24px; height: 24px;
+  background: #e83e3e;
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8em;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ===== GAME SCREEN ===== */
+#screen-game {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+}
+
+.tb-label { font-size: 0.65em; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+.tb-score { font-size: 1.7em; font-weight: 800; color: #e83e3e; line-height: 1; }
+
+.timer-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-timer-wrap {
+  flex: 1;
+  height: 14px;
+  background: #eee;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.game-timer-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  border-radius: 7px;
+  transition: width 1s linear, background 0.5s;
+}
+
+.timer-text { font-size: 1.05em; font-weight: 700; color: #333; min-width: 42px; }
+
+.combo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 48px;
+}
+
+.combo-label { font-size: 0.6em; color: #aaa; }
+.combo-count { font-size: 1.3em; font-weight: 800; color: #ff8c00; }
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.back-btn:hover { background: #f5f5f5; }
+
+/* Game Area */
+.game-area {
+  display: flex;
+  gap: 0;
+  flex: 1;
+  padding: 12px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Left Panel */
+.left-panel {
+  width: 190px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.customer-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.customer-char {
+  font-size: 3.5em;
+  display: block;
+  margin-bottom: 6px;
+  animation: breathe 2s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+.order-bubble {
+  background: #f0f8ff;
+  border: 2px solid #90caf9;
+  border-radius: 10px;
+  padding: 8px;
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.bubble-arrow {
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: #90caf9;
+}
+
+.order-emoji { font-size: 2em; display: block; }
+.order-name  { font-size: 0.95em; font-weight: 700; color: #333; }
+
+.customer-timer-wrap {
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.customer-timer-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  border-radius: 4px;
+  transition: width 0.5s linear, background 0.5s;
+}
+
+.customer-mood {
+  font-size: 0.72em;
+  color: #888;
+  font-style: italic;
+}
+
+/* Recipe Card */
+.recipe-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.recipe-title { font-size: 0.85em; font-weight: 700; color: #555; margin-bottom: 10px; }
+
+.recipe-list { display: flex; flex-direction: column; gap: 6px; }
+
+.recipe-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 8px;
+  background: #fafafa;
+  border-radius: 9px;
+  font-size: 0.83em;
+  color: #444;
+  border: 1.5px solid transparent;
+  transition: all 0.3s;
+}
+
+.recipe-item.done {
+  background: #e8ffe8;
+  border-color: #a5d6a7;
+  color: #388e3c;
+  text-decoration: line-through;
+}
+
+.recipe-item-emoji { font-size: 1.3em; }
+
+/* Kitchen Panel */
+.kitchen-panel {
+  flex: 1;
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.kitchen-workspace {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.workspace-header {
+  font-size: 0.8em;
+  font-weight: 700;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  align-self: flex-start;
+}
+
+.pot-zone { flex-shrink: 0; }
+
+.pot-icon {
+  font-size: 4em;
+  animation: potRock 1.2s ease-in-out infinite alternate;
+  display: block;
+  text-align: center;
+}
+
+@keyframes potRock {
+  from { transform: rotate(-4deg) scale(1); }
+  to   { transform: rotate(4deg)  scale(1.05); }
+}
+
+.selected-zone {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-content: flex-start;
+  min-height: 60px;
+  width: 100%;
+  padding: 10px;
+  background: #fdf6ec;
+  border: 2px dashed #f0c070;
+  border-radius: 12px;
+  flex: 1;
+}
+
+.placeholder-text {
+  font-size: 0.8em;
+  color: #ccc;
+  align-self: center;
+}
+
+.ingredient-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #e3f2fd;
+  border: 2px solid #90caf9;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.82em;
+  animation: popIn 0.25s ease;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ingredient-tag:hover {
+  background: #ffcdd2;
+  border-color: #ef9a9a;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.action-row { display: flex; gap: 10px; flex-shrink: 0; }
+
+.cook-btn, .serve-btn {
+  padding: 11px 28px;
+  border: none;
+  border-radius: 24px;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.cook-btn {
+  background: linear-gradient(135deg, #ff6b35, #ffad4f);
+  color: #fff;
+  animation: pulse 1s ease infinite;
+}
+
+@keyframes pulse {
+  0%,100% { box-shadow: 0 4px 12px rgba(255,107,53,0.4); }
+  50%      { box-shadow: 0 6px 20px rgba(255,107,53,0.7); }
+}
+
+.serve-btn {
+  background: linear-gradient(135deg, #4caf50, #81c784);
+  color: #fff;
+}
+
+.cook-btn:hover, .serve-btn:hover { transform: translateY(-3px); }
+.hidden { display: none !important; }
+
+.cook-progress-wrap {
+  width: 100%;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.cook-progress-bar {
+  height: 18px;
+  background: #eee;
+  border-radius: 9px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.cook-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff6b35, #ffd700);
+  border-radius: 9px;
+  transition: width 2s ease;
+}
+
+.cook-status { font-size: 0.85em; color: #888; }
+
+/* Ingredients Panel */
+.ingredients-panel {
+  background: #fff;
+  padding: 10px 16px 14px;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-size: 0.82em;
+  font-weight: 700;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.ingredients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.ing-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 11px;
+  background: #fff8f0;
+  border: 2px solid #ffd3b6;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: all 0.18s;
+  min-width: 62px;
+  font-family: inherit;
+}
+
+.ing-btn:hover { background: #ffe8d3; transform: scale(1.06); }
+
+.ing-btn.selected {
+  background: #e8ffe8;
+  border-color: #a5d6a7;
+}
+
+.ing-btn.wrong {
+  animation: shake 0.45s;
+  background: #ffe0e0;
+  border-color: #ef9a9a;
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  60%      { transform: translateX(6px); }
+}
+
+.ing-emoji { font-size: 1.9em; }
+.ing-name  { font-size: 0.7em; color: #555; white-space: nowrap; }
+
+/* Feedback Overlay */
+.feedback-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 200;
+}
+
+.feedback-text {
+  font-size: 2.6em;
+  font-weight: 900;
+  text-align: center;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  animation: feedAnim 1.1s ease forwards;
+  white-space: pre-line;
+}
+
+@keyframes feedAnim {
+  0%   { transform: scale(0.4) translateY(20px); opacity: 0; }
+  30%  { transform: scale(1.1) translateY(0);    opacity: 1; }
+  70%  { transform: scale(1)   translateY(0);    opacity: 1; }
+  100% { transform: scale(1.2) translateY(-30px); opacity: 0; }
+}
+
+/* ===== GAME OVER ===== */
+#screen-gameover {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  align-items: center;
+  justify-content: center;
+}
+
+.gameover-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.gameover-card {
+  background: #fff;
+  border-radius: 28px;
+  padding: 36px 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.go-emoji   { font-size: 4em; margin-bottom: 8px; }
+.gameover-card h1 { font-size: 1.8em; color: #333; margin-bottom: 10px; }
+.go-grade   { font-size: 2.5em; margin-bottom: 14px; }
+
+.go-score-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 18px;
+}
+
+.go-score-label { font-size: 0.9em; color: #aaa; }
+.go-score       { font-size: 3.2em; font-weight: 900; color: #e83e3e; }
+.go-score-unit  { font-size: 1.1em; color: #aaa; }
+
+.go-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.stat { text-align: center; }
+.stat-val  { font-size: 1.6em; font-weight: 800; color: #333; }
+.stat-lbl  { font-size: 0.75em; color: #aaa; }
+
+.go-message {
+  font-size: 1em;
+  color: #555;
+  background: #f8f8f8;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+
+.go-buttons { display: flex; gap: 12px; justify-content: center; }
+
+.go-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 22px;
+  font-size: 0.95em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: inherit;
+}
+
+.go-btn.retry { background: linear-gradient(135deg, #e83e3e, #ff7043); color: #fff; }
+.go-btn.menu  { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+.go-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 520px) {
+  .game-area { flex-direction: column; padding: 8px; gap: 8px; }
+
+  .left-panel {
+    width: 100%;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: auto;
+  }
+
+  .customer-card { width: 140px; flex-shrink: 0; }
+  .customer-char { font-size: 2.8em; }
+
+  .kitchen-panel { padding-left: 0; }
+
+  .ingredients-grid { justify-content: center; }
+
+  .title-area h1 { font-size: 2em; }
+  .cuisine-btn { width: 140px; padding: 14px 10px; }
+  .c-emoji { font-size: 2.2em; }
+}
